@@ -1,0 +1,52 @@
+[
+  {
+    "balance":120480.0,
+    "pin":23434,
+    "name":"Themba Makamu",
+    "id":20191003
+  },
+  {
+    "balance":200.0,
+    "pin":3008,
+    "name":"Lesego Sithole",
+    "id":20191004
+  },
+  {
+    "balance":2050.0,
+    "pin":43542,
+    "name":"Philisiwe Masilela",
+    "id":20191002,
+    "transactions":
+    [
+      {
+        "date_time":"Tue, Jul 30 2019 15:34:41",
+        "funds":300.0,
+        "transaction_type":"Deposit"
+      },
+      {
+        "date_time":"Tue, Jul 30 2019 15:35:02",
+        "funds":120.0,
+        "transaction_type":"Deposit"
+      },
+      {
+        "date_time":"Tue, Jul 30 2019 15:35:23",
+        "funds":430.0,
+        "transaction_type":"Withdrawal"
+      }
+    ]
+  },
+  {
+    "balance":33.0,
+    "pin":12345,
+    "name":"Tshepang Maila",
+    "id":20191001,
+    "transactions":
+    [
+      {
+        "date_time":"Tue, Jul 30 2019 16:41:38",
+        "funds":33.0,
+        "transaction_type":"Deposit"
+      }
+    ]
+  }
+]
