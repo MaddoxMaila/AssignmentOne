@@ -52,6 +52,18 @@ public class FileIO {
         return found;
     } // End Of findCard()
 
+    /*
+    
+    Bug :
+      Found A Bug With This Method
+      While Trying To Get The Last Card Number , We Thought The It'll Always Be At The Of The JsonArray
+      Of Which It Is Not And Raised An Error Of Duplicate Ids
+      
+    Squashed :
+      Now On The Branch Code
+      We Just Look For The Highest Card Number And Increment It To Get The Next Card Number When A New Card Is Created
+    
+    */
     public long getLastCardNumber(){
 
         long cardNumber = 20191000;
@@ -63,19 +75,29 @@ public class FileIO {
 
             JSONArray cardList = (JSONArray) this.parser.parse(this.printCard);
 
-               if(cardList.isEmpty()){
+            JSONObject Card = (JSONObject) cardList.get(0);
 
-                   return cardNumber;
+            long HighestId = (long) Card.get("id");
 
-               }else{
+            if(!cardList.isEmpty()){
 
-                   JSONObject lastCard = (JSONObject) cardList.get(cardList.size() - 1); // To Get The Last Json Object
+                for(int i = 1; i < cardList.size(); i++){
 
-                   cardNumber = (long) lastCard.get("id");
+                    Card = (JSONObject) cardList.get(i);
 
-                   return cardNumber;
+                    HighestId = (HighestId < (long) Card.get("id") ? (long) Card.get("id") : HighestId);
 
-               }
+                }
+
+                cardNumber = HighestId;
+
+                return cardNumber;
+
+            }else{
+
+                return cardNumber;
+
+            }
 
         }catch (IOException io){
 
