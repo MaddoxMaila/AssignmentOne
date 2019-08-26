@@ -64,9 +64,23 @@ public class FileIO {
       We Just Look For The Highest Card Number And Increment It To Get The Next Card Number When A New Card Is Created
     
     */
-    public long getLastCardNumber(){
+     /*
+        
+          To Generate Unique Card Numbers For Each And Every Card That Is Created
+          
+          Must First Check For Highest Card Number From All Cards In The System
+          
+          Then Increment That Highest Card Number To Be The Next Card Number For The NExt Card Created
+          
+          
+        
+        */
 
-        long cardNumber = 20191000;
+    public long getLastCardNumber(){
+        
+        // Method Should Return The Highest Card Number
+
+        long cardNumber = 20191000; // Default Card Number, If There Are No Cards Saved On System, i.e When The First Card Is Created
 
         try {
 
@@ -75,27 +89,40 @@ public class FileIO {
 
             JSONArray cardList = (JSONArray) this.parser.parse(this.printCard);
 
-            JSONObject Card = (JSONObject) cardList.get(0);
+            JSONObject Card = (JSONObject) cardList.get(0); // Get The First Card
 
-            long HighestId = (long) Card.get("id");
-
+            long HighestId = (long) Card.get("id"); // Get The Fisrt Id Form The First Card, By Default Its The Highest Card Number
+            
+            // Check If There Are Cards In The System
             if(!cardList.isEmpty()){
+                
+                // There Are Cards
 
                 for(int i = 1; i < cardList.size(); i++){
 
-                    Card = (JSONObject) cardList.get(i);
+                    Card = (JSONObject) cardList.get(i); // Get The Card On Iteration
+                    
+                    /*
+                      
+                      If The Current Card On Iteration Has Higher Card Number Than The Cards On Previous Iteration
+                      
+                      Set The HighestId variable To Current Card Cards' Number
+                      
+                    */
 
                     HighestId = (HighestId < (long) Card.get("id") ? (long) Card.get("id") : HighestId);
 
                 }
 
-                cardNumber = HighestId;
+                cardNumber = HighestId; 
 
-                return cardNumber;
+                return cardNumber; // Return The Highest Card Number
 
-            }else{
+            }else{ 
+                
+                // There Are No Cards In System
 
-                return cardNumber;
+                return cardNumber; // Return The Default Card Number
 
             }
 
@@ -108,8 +135,10 @@ public class FileIO {
             pe.printStackTrace();
 
         }
-        return cardNumber;
-    }
+        
+        return cardNumber; // Return Card Number
+        
+    } // End Of Method
 
 
     // Method To Keep Track Of Each And Every Transaction Happening Concerning A Card
