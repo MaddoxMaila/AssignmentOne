@@ -16,6 +16,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/*
+  
+  Class FileIO Acts As Layer Between The System(File) And Card Class
+  
+  Whenever A Card Requests A Service, This Class Will Handle Those Requests, A Card Cannot Directly Modify Or Change The File Contents
+  
+  
+
+*/
 
 public class FileIO {
 
