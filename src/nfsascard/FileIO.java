@@ -35,15 +35,19 @@ public class FileIO {
 
         for(int i = 0; i < objectArray.size(); i ++){
 
-            obj = (JSONObject) objectArray.get(i);
+            this.obj = (JSONObject) objectArray.get(i); // Holds The Card On Current Iteration
 
-            if((long) obj.get("id") == (long)cardNumber){
-
+            if((long) obj.get("id") == (long) cardNumber){
+                
+                // Card Found On The System
+                
                 found = true;
                 break;
 
             }else{
-
+                
+                // Card Was Not Found On The System
+                
                 found = false;
 
             }
@@ -58,10 +62,21 @@ public class FileIO {
       Check getLastCardNumber-Patch Branch For The Bug Fix
       
     */
+     /*
+        
+          To Generate Unique Card Numbers For Each And Every Card That Is Created
+          
+          Must First Check For Highest Card Number From All Cards In The System
+          
+          Then Increment That Highest Card Number To Be The Next Card Number For The NExt Card Created
+          
+          
+        
+        */
 
     public long getLastCardNumber(){
 
-        long cardNumber = 20191000;
+        long cardNumber = 20191000; // Default Card Number If There Are No Cards In The System, i.e When The First Card Is Created
 
         try {
 
@@ -69,12 +84,17 @@ public class FileIO {
             this.printCard = new FileReader(this.fileName);
 
             JSONArray cardList = (JSONArray) this.parser.parse(this.printCard);
-
+            
+            // Check If There Are Crds In The System
                if(cardList.isEmpty()){
+                   
+                   // No Cards In The System
 
-                   return cardNumber;
+                   return cardNumber; // Return The Default Card Number
 
                }else{
+                   
+                   // There Are Cards In The System
 
                    JSONObject lastCard = (JSONObject) cardList.get(cardList.size() - 1); // To Get The Last Json Object
 
@@ -128,6 +148,14 @@ public class FileIO {
 
 
     } // trackTransactions()
+    
+    /*
+      
+      saveTransactions() Method is used To Save every transaction associated with a card to file
+      
+      It Handles Both Deposits & Withdrawals
+    
+    */
 
     public void saveTransactions(int Context, double funds, long cardNumber){
 
@@ -149,30 +177,36 @@ public class FileIO {
 
             this.printCard = new FileReader(this.fileName);
 
-            JSONArray dataList = (JSONArray) this.parser.parse(this.printCard);
+            JSONArray dataList = (JSONArray) this.parser.parse(this.printCard); // Save The File Contents Into A JSONArray Object
 
-            // Check If The Number Corresponds To Any That Has Already Been Created
-              if(this.findCard(dataList, cardNumber)){ // Card Was Found
+            // Check If The Card Number Matches To A Card That Has Already Been Created By Calling The findCard Method
+              if(this.findCard(dataList, cardNumber)){ 
+                  
+                  // Card Was Found
 
-                  dataList.remove(this.obj);
+                  dataList.remove(this.obj); // Remove The Card From System To Make Changes To The Card
 
                   double balance = 0.0;
                   String type = "";
 
                   if(Context == 1){ // For Depositing
 
-                       balance = (double) this.obj.get("balance") + funds; // Increment The Current Amount
+                       balance = (double) this.obj.get("balance") + funds; // Increment The Current Amount With The Funds That Were Just Entered By The User
                        type = "Deposit";
 
                   }else if(Context == 2){ // For Withdrawing
 
                       // Check If There Are Enough Funds To Withdraw
                       if((double) this.obj.get("balance") - funds > 0){
+                          
+                          // There Are Suffiecient Funds On The Card
 
-                          balance = (double) this.obj.get("balance") - funds; // Decrement The Current Amount
+                          balance = (double) this.obj.get("balance") - funds; // Decrement The Current Amount With The Funds That Were Just Entered By User
                           type = "Withdrawal";
 
                       }else{
+                          
+                          // There Are Insufficient Funds On The Card 
 
                           System.out.println("#### ---- Insufficient Funds, Unable To Perform Transaction ---- ####");
                           return;
@@ -180,13 +214,20 @@ public class FileIO {
                       } // End Of Funds If
 
                   } // End Of Context If
-
+                  
+                  
+                  // Using The Card Saved In this.obj, Make Changes To It
+                  
                   this.obj.replace("balance", balance);
 
                   this.trackTransactions(this.obj, type, funds);
-
+                  
+                  // Save The Updated Card To All Cards
+                  
                   dataList.add(this.obj);
-
+                  
+                  // Saves Card To File
+                  
                   this.saveCard = new FileWriter(this.fileName);
 
                   this.saveCard.write(dataList.toJSONString());
@@ -196,6 +237,8 @@ public class FileIO {
 
 
               }else{
+                  
+                  // Card Was Not Found
 
                   System.out.println("\n ##### ---- Could Not Find Card Using The Card Id, Deposit Unsuccessful ---- #####");
 
